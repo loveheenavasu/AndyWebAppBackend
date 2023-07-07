@@ -63,13 +63,13 @@ app.use(express.json());
 //   'Access-Control-Allow-Origin': 'http://localhost:3000'
 // }));
 
-const corsOption = {
-  origin: "*",
-  methods: ['GET', 'PUT', 'POST', 'HEAD', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Headers'],
-  credentials: true,
-}
-app.use(cors(corsOption));
+// const corsOption = {
+//   origin: "*",
+//   methods: ['GET', 'PUT', 'POST', 'HEAD', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Headers'],
+//   credentials: true,
+// }
+// app.use(cors(corsOption));
 app.use(userRoutes);
 
 

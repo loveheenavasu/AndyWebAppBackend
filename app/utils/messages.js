@@ -14,5 +14,7 @@ const MESSAGES = {
   LESSON_ADDED:"Lesson added successfully",
   PLEASE_ENTER_EMAIL_PASSWORD:"Please enter email and password",
   PLEASE_ENTER_REQUIRED_FIELD:"Please enter the required field",
+  EMAIL_EXIST:'Email already exist',
+  COURSE_DOES_NOT_EXIST:'Course doesnot exist with requested id'
 };
 module.exports = MESSAGES;

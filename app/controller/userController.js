@@ -24,9 +24,9 @@ const userController = {};
 
 /**
  * general function to get authentication of the user
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 async function verifyUser(req, res) {
   if (!req.headers.authorization) {
@@ -48,9 +48,9 @@ async function verifyUser(req, res) {
 }
 /**
  * admin login
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.adminLogin = async (req, res) => {
   const payload = req.body;
@@ -62,16 +62,27 @@ userController.adminLogin = async (req, res) => {
   res.json({ message: { token } });
 };
 
-userController.adminSignup=async(req,res)=>{
-    const admin=findOneAdmin({email:req.body.email});
-    if(admin){}
-}
+userController.adminSignup = async (req, res) => {
+  const adminExist = await findOneAdmin({ email: req.body.email });
+  if (adminExist) {
+    return res.json({ message: MESSAGES.EMAIL_EXIST });
+  }
+  const admin = await createAdmin(req.body);
+  const token =await helperFunction.generateToken({ _id: admin._id });
+  const session = {
+    userId: admin._id,
+    token: token,
+    userType: "admin",
+  };
+  await createSession(session);
+  return res.json({ message: { _id: admin._id, token: token } });
+};
 
 /**
  * link send to email for the user
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.onboarding = async (req, res) => {
   if (!req.body.email) {
@@ -94,8 +105,8 @@ userController.verifyOnboarding = async (req, res) => {
 
 /**
  * show courses
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 userController.getCourses = async (req, res) => {
   await verifyUser(req, res);
@@ -106,8 +117,8 @@ userController.getCourses = async (req, res) => {
 
 /**
  * for admin to create the course
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  */
 userController.createCourse = async (req, res) => {
   await helperFunction.adminAuthentication(req, res);
@@ -118,11 +129,11 @@ userController.createCourse = async (req, res) => {
 
 /**
  * for user to give test
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
-userController.test = async (req, res) => {
+userController.lessonTest = async (req, res) => {
   const user = await verifyUser(req, res);
   const courseEnrolled = await findOneEnrolledCourse({
     userId: user._id,
@@ -151,9 +162,9 @@ userController.test = async (req, res) => {
 
 /**
  * show question to user during test
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.showQuestion = async (req, res) => {
   const user = await verifyUser(req, res);
@@ -186,9 +197,9 @@ userController.showQuestion = async (req, res) => {
 
 /**
  * show content to user for course
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.showContent = async (req, res) => {
   const user = await verifyUser(req, res);
@@ -214,9 +225,9 @@ userController.showContent = async (req, res) => {
 
 /**
  * user purchase or start the course
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.courseEnroll = async (req, res) => {
   const user = await verifyUser(req, res);
@@ -241,18 +252,23 @@ userController.courseEnroll = async (req, res) => {
 };
 
 /**
- * admin can add new lesson to the course 
- * @param {*} req 
- * @param {*} res 
- * @returns 
+ * admin can add new lesson to the course
+ * @param {*} req
+ * @param {*} res
+ * @returns
  */
 userController.addLesson = async (req, res) => {
   const admin = await helperFunction.adminAuthentication(req, res);
+  const courseExist=await findOneCourse({_id:req.body.courseId});
+  if(!courseExist){
+    return res.json({message:MESSAGES.COURSE_DOES_NOT_EXIST});
+  }
   const course = await findOneAndUpdateCourse(
     { _id: req.body.courseId },
     { $push: { "course.courseLesson": req.body.lesson } }
   );
-  return res.json({message:MESSAGES.LESSON_ADDED});
+  console.log(course);
+  return res.json({ message: MESSAGES.LESSON_ADDED });
 };
 
 module.exports = userController;
