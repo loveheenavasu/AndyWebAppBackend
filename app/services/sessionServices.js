@@ -1,4 +1,4 @@
-const sessionModel = require("../models/sessionModel");
+const sessionModel = require('../models/sessionModel');
 
 const sessionServices={};
 
@@ -7,9 +7,9 @@ const sessionServices={};
  * @param {*} session 
  * @returns 
  */
-sessionServices.createSession=async(session)=>{
-    return await sessionModel(session).save();
-}
+sessionServices.createSession=async (session)=>{
+  return await sessionModel(session).save();
+};
 
 /**
  * service to search for the session
@@ -17,9 +17,9 @@ sessionServices.createSession=async(session)=>{
  * @param {*} projectionQuery 
  * @returns 
  */
-sessionServices.findOneSession=async(searchQuery,projectionQuery)=>{
-    return await sessionModel.findOne(searchQuery,projectionQuery);
-}
+sessionServices.findOneSession=async (searchQuery, projectionQuery)=>{
+  return await sessionModel.findOne(searchQuery, projectionQuery);
+};
 
 /**
  * service to update the session
@@ -27,8 +27,8 @@ sessionServices.findOneSession=async(searchQuery,projectionQuery)=>{
  * @param {*} updateQuery 
  * @returns 
  */
-sessionServices.findOneAndUpdateSession=async(searchQuery,updateQuery)=>{
-    return await sessionModel.findOneAndUpdate(searchQuery,updateQuery);
-}
+sessionServices.findOneAndUpdateSession=async (searchQuery, updateQuery)=>{
+  return await sessionModel.findOneAndUpdate(searchQuery, updateQuery);
+};
 
 module.exports=sessionServices;

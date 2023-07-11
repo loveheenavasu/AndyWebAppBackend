@@ -1,17 +1,17 @@
-const mongoose=require("mongoose");
+const mongoose=require('mongoose');
 const adminSchema=new mongoose.Schema({
-    email:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
-    isAdmin:{
-        type:Boolean,
-        default:true
-    }
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  isAdmin: {
+    type: Boolean,
+    default: true,
+  },
 });
-const adminModel=mongoose.model("admins",adminSchema);
+const adminModel=mongoose.model('admins', adminSchema);
 module.exports=adminModel;

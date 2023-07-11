@@ -38,7 +38,6 @@ helperFunction.sendEmail = async (req) => {
 /**
  * to generate the token
  * @param {*} payload
- * @returns
  */
 helperFunction.generateToken = async (payload) => {
   return await jwt.sign(payload, SECRETKEY);
@@ -47,7 +46,6 @@ helperFunction.generateToken = async (payload) => {
 /**
  * to decrypt the token
  * @param {*} token
- * @returns
  */
 helperFunction.decryptToken = async (token) => {
   return await jwt.verify(token, SECRETKEY);
@@ -96,7 +94,6 @@ helperFunction.verifyUser = async (req, res) => {
         return user;
       }
     }
-    return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
   } catch (error) {
     console.error(error);
     return res.status(500).json({message: 'Internal Server Error'});

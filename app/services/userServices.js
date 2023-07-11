@@ -1,4 +1,4 @@
-const userModel = require("../models/userModel");
+const userModel = require('../models/userModel');
 
 const userServices={};
 
@@ -7,12 +7,12 @@ const userServices={};
  * @param {*} payload 
  * @returns 
  */
-userServices.createUser=async(payload)=>{
-    return await userModel(payload).save();
-}
+userServices.createUser=async (payload)=>{
+  return await userModel(payload).save();
+};
 
-userServices.findOneUser=async(searchQuery,projectionQuery)=>{
-    return await userModel.findOne(searchQuery,projectionQuery);
-}
+userServices.findOneUser=async (searchQuery, projectionQuery)=>{
+  return await userModel.findOne(searchQuery, projectionQuery);
+};
 
 module.exports=userServices;

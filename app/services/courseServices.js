@@ -1,4 +1,4 @@
-const courseModel = require("../models/courseModel");
+const {courseModel} = require('../models/courseModel');
 
 const courseServices = {};
 
@@ -28,9 +28,9 @@ courseServices.findCourse = async (searchQuery, projectionQuery) => {
  * @param {*} projectionQuery 
  * @returns 
  */
-courseServices.findOneCourse=async(searchQuery,projectionQuery)=>{
-    return await courseModel.findOne(searchQuery,projectionQuery);
-}
+courseServices.findOneCourse=async (searchQuery, projectionQuery)=>{
+    return await courseModel.findOne(searchQuery, projectionQuery);
+};
 
 /**
  * service to search the course and update it

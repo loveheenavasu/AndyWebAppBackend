@@ -1,7 +1,9 @@
 {
   "scripts": {
     "start": "nodemon ./server.js",
-    "dev": "nodemon ./server.js"
+    "dev": "nodemon ./server.js",
+    "lint": "eslint .",
+  "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,5 +19,9 @@
   "name": "AndyWebAppBackend",
   "version": "1.0.0",
   "main": "server.js",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": ">=5.16.0",
+    "eslint-config-google": "^0.14.0"
+  }
 }
