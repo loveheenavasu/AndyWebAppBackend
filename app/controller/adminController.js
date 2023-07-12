@@ -10,10 +10,9 @@ const MESSAGES = require('../utils/messages');
 const adminController = {};
 
 /**
- * admin login
+ * admin can create his account
  * @param {*} req
  * @param {*} res
- * @return
  */
 adminController.adminLogin = async (req, res) => {
   try {
@@ -32,15 +31,14 @@ adminController.adminLogin = async (req, res) => {
     res.status(200).json({message: {token}});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * creating the account of admin
+ * admin can create his account
  * @param {*} req
  * @param {*} res
- * @returns
  */
 adminController.adminSignup = async (req, res) => {
   try {
@@ -59,15 +57,14 @@ adminController.adminSignup = async (req, res) => {
     return res.status(201).json({message: {_id: admin._id, token: token}});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * generating the token for admin
+ * for encrypting userId and generating the token
  * @param {*} req
  * @param {*} res
- * @returns
  */
 adminController.encryptToken = async (req, res) => {
   try {
@@ -75,15 +72,14 @@ adminController.encryptToken = async (req, res) => {
     return res.status(201).json({message: token});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * decrypting the token to be verified by the user
+ * for decrypting the token and getting the profile of user
  * @param {*} req
  * @param {*} res
- * @returns
  */
 adminController.decrytToken = async (req, res) => {
   try {
@@ -96,7 +92,7 @@ adminController.decrytToken = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 

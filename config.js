@@ -1,7 +1,15 @@
-module.exports={
-    PORT:process.env.PORT,
-    DATABASEURL:process.env.DATABASEURL,
-    SMTPMAIL:process.env.SMTP_MAIL,
-    SMTPPASSWORD:process.env.SMTP_PASSWORD,
-    SECRETKEY:process.env.SECRETKEY
-}
+const {
+  PORT,
+  DATABASEURL,
+  SMTP_MAIL: SMTPMAIL,
+  SMTP_PASSWORD: SMTPPASSWORD,
+  SECRETKEY,
+} = process.env;
+
+module.exports = {
+  PORT,
+  DATABASEURL,
+  SMTPMAIL,
+  SMTPPASSWORD,
+  SECRETKEY,
+};

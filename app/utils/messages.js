@@ -19,5 +19,6 @@ const MESSAGES = {
   QUESTION_NOT_ADDED: 'Question not added',
   INVALID_TOKEN: 'Invalid token',
   LESSON_NOT_FOUND: 'Lesson not found',
+  INTERNAL_SERVER_ERROR: 'Internal server error',
 };
 module.exports = MESSAGES;

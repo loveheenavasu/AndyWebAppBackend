@@ -2,12 +2,13 @@ const adminController = require('../controller/adminController');
 const adminDataValidation = require('../middleware/adminDataValidation');
 const express = require('express');
 const authValidation = require('../middleware/authentication');
+// eslint-disable-next-line new-cap
 const adminRoutes = express.Router();
 
-adminRoutes.post('/admin', adminController.adminSignup);
+adminRoutes.post('/adminSignup', adminController.adminSignup);
 
 adminRoutes.post(
-    '/adminlogin',
+    '/adminLogin',
     adminDataValidation.adminLogin,
     adminController.adminLogin,
 );

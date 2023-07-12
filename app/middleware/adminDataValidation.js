@@ -7,7 +7,6 @@ const adminDataValidation = {};
  * @param {*} req
  * @param {*} res
  * @param {*} next
- * @returns
  */
 adminDataValidation.adminLogin = (req, res, next) => {
   if (req.body.email && req.body.password) {
@@ -17,6 +16,12 @@ adminDataValidation.adminLogin = (req, res, next) => {
   }
 };
 
+/**
+ * data validation for encrypting the token by admin
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
 adminDataValidation.encryptToken = (req, res, next) => {
   if (req.body.userId) {
     next();
@@ -25,6 +30,12 @@ adminDataValidation.encryptToken = (req, res, next) => {
   }
 };
 
+/**
+ * data validation to decrypt the token
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 adminDataValidation.decryptToken = (req, res, next) => {
   if (req.body.token) {
     next();

@@ -4,8 +4,7 @@ const courseServices = {};
 
 /**
  * service to create the course
- * @param {*} course 
- * @returns 
+ * @param {*} course
  */
 courseServices.createCourse = async (course) => {
   return await courseModel(course).save();
@@ -13,9 +12,8 @@ courseServices.createCourse = async (course) => {
 
 /**
  * service to search for all the course
- * @param {*} searchQuery 
- * @param {*} projectionQuery 
- * @returns 
+ * @param {*} searchQuery
+ * @param {*} projectionQuery
  */
 courseServices.findCourse = async (searchQuery, projectionQuery) => {
   return await courseModel.find(searchQuery, projectionQuery);
@@ -24,19 +22,17 @@ courseServices.findCourse = async (searchQuery, projectionQuery) => {
 
 /**
  * service to search for the single course
- * @param {*} searchQuery 
- * @param {*} projectionQuery 
- * @returns 
+ * @param {*} searchQuery
+ * @param {*} projectionQuery
  */
-courseServices.findOneCourse=async (searchQuery, projectionQuery)=>{
-    return await courseModel.findOne(searchQuery, projectionQuery);
+courseServices.findOneCourse = async (searchQuery, projectionQuery)=>{
+  return await courseModel.findOne(searchQuery, projectionQuery);
 };
 
 /**
  * service to search the course and update it
- * @param {*} searchQuery 
- * @param {*} updateQuery 
- * @returns 
+ * @param {*} searchQuery
+ * @param {*} updateQuery
  */
 courseServices.findOneAndUpdateCourse = async (searchQuery, updateQuery) => {
   return await courseModel.findOneAndUpdate(searchQuery, updateQuery);

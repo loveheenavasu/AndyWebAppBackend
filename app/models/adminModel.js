@@ -10,8 +10,7 @@ const adminSchema=new mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
-    default: true,
   },
 });
-const adminModel=mongoose.model('admins', adminSchema);
+const adminModel=mongoose.model('Admin', adminSchema);
 module.exports=adminModel;

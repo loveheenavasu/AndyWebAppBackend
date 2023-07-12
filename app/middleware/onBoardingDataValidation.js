@@ -1,6 +1,5 @@
 const {
   PLEASE_ENTER_REQUIRED_FIELD,
-  UNAUTHORIZED_USER,
 } = require('../utils/messages');
 
 const onBoardingDataValidation = {
@@ -9,7 +8,6 @@ const onBoardingDataValidation = {
    * @param {*} req
    * @param {*} res
    * @param {*} next
-   * @return
    */
   addCourse: (req, res, next) => {
     const payload = req.body;
@@ -31,10 +29,16 @@ const onBoardingDataValidation = {
    * @param {*} req
    * @param {*} res
    * @param {*} next
-   * @return
    */
   addLesson: (req, res, next) => {
-    if (req.body.courseId && req.body.lesson) {
+    const payload=req.body;
+    if (
+      req.headers.authorization&&
+      payload.courseId&&
+      payload.lessonName&&
+      payload.description&&
+      payload.questionAnswer.length>0
+    ) {
       next();
     } else {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
@@ -46,13 +50,12 @@ const onBoardingDataValidation = {
    * @param {*} req
    * @param {*} res
    * @param {*} next
-   * @return
    */
   verifyOnboarding: (req, res, next) => {
     if (req.headers.authorization) {
       next();
     } else {
-      return res.status(401).json({message: UNAUTHORIZED_USER});
+      return res.status(400).json({message: 'Authorization code not found!'});
     }
   },
 
@@ -61,10 +64,9 @@ const onBoardingDataValidation = {
    * @param {*} req
    * @param {*} res
    * @param {*} next
-   * @return
    */
   enrollCourse: (req, res, next) => {
-    if (req.body.courseId) {
+    if (req.headers.authorization&&req.body.courseId) {
       next();
     } else {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
@@ -76,10 +78,9 @@ const onBoardingDataValidation = {
    * @param {*} req
    * @param {*} res
    * @param {*} next
-   * @return
    */
   showContent: (req, res, next) => {
-    if (req.body.courseId && req.body.lessonId) {
+    if (req.headers.authorization&&req.body.courseId && req.body.lessonId) {
       next();
     } else {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
@@ -87,14 +88,13 @@ const onBoardingDataValidation = {
   },
 
   /**
-   * data validation to show the question
+   *data validation for showing the questions
    * @param {*} req
    * @param {*} res
-   * @param {*} next
-   * @return
+   * @param {*} next {*}
    */
   showQuestion: (req, res, next) => {
-    if (req.body.courseId && req.body.lessonId) {
+    if (req.headers.authorization&&req.body.courseId && req.body.lessonId) {
       next();
     } else {
       return res.status(400).json({messge: PLEASE_ENTER_REQUIRED_FIELD});
@@ -105,11 +105,11 @@ const onBoardingDataValidation = {
    * data validation for the test of a lesson
    * @param {*} req
    * @param {*} res
-   * @param {*} next
-   * @return
+   * @param {*} nexts
    */
   lessonTest: (req, res, next) => {
     if (
+      req.headers.authorization&&
       req.body.lessonId &&
       req.body.courseId &&
       req.body.questionId &&

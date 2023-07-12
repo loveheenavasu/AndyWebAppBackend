@@ -13,7 +13,7 @@ const enrolledCourseSchema = new mongoose.Schema(
     {timestamps: true},
 );
 const enrolledCourseModel = mongoose.model(
-    'enrolledCourses',
+    'EnrolledCourse',
     enrolledCourseSchema,
 );
 module.exports = enrolledCourseModel;

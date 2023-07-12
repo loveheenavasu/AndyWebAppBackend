@@ -1,25 +1,22 @@
-const adminModel = require("../models/adminModel");
+const adminModel = require('../models/adminModel');
 
 const adminServices={};
 
 /**
- * serice to add the admin
- * @param {*} payload 
- * @returns 
+ * service to add the admin
+ * @param {*} payload
  */
-adminServices.createAdmin=async(payload)=>{
-    return await adminModel(payload).save();
-}
+adminServices.createAdmin = async (payload)=>{
+  return await adminModel(payload).save();
+};
 
 /**
  * service to search for the admin
- * @param {*} searchQuery 
- * @param {*} projectionQuery 
- * @returns 
+ * @param {*} searchQuery
+ * @param {*} projectionQuery
  */
-adminServices.findOneAdmin=async(searchQuery,projectionQuery)=>{
-    console.log(searchQuery)
-    return await adminModel.findOne(searchQuery,projectionQuery);
-}
+adminServices.findOneAdmin = async (searchQuery, projectionQuery)=>{
+  return await adminModel.findOne(searchQuery, projectionQuery);
+};
 
-module.exports=adminServices;
+module.exports = adminServices;

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const {
   onboarding,
@@ -12,7 +13,8 @@ const {
 } = require('../controller/onboardingController');
 const onBoardingDataValidation =
 require('../middleware/onBoardingDataValidation');
-const {checkCourse} = require('../middleware/onBoarding');
+const {checkCourseOrLesson} = require('../middleware/onBoarding');
+// eslint-disable-next-line new-cap
 const onBoardingRoutes = express.Router();
 
 onBoardingRoutes.get('/onboarding', onboarding);
@@ -23,34 +25,40 @@ onBoardingRoutes.get(
     verifyOnboarding,
 );
 
+onBoardingRoutes.get('/course', getCourses);
+
+onBoardingRoutes.get('/lessonTest',
+    onBoardingDataValidation.lessonTest,
+    checkCourseOrLesson,
+    lessonTest);
+
+onBoardingRoutes.get(
+    '/showQuestions',
+    onBoardingDataValidation.showQuestion,
+    checkCourseOrLesson,
+    showQuestion,
+);
+
+onBoardingRoutes.get(
+    '/lessonContent',
+    onBoardingDataValidation.showContent,
+    checkCourseOrLesson,
+    showContent,
+);
+
 onBoardingRoutes.post('/course', onBoardingDataValidation.addCourse, addCourse);
 
 onBoardingRoutes.post(
     '/courseEnrolled',
     onBoardingDataValidation.enrollCourse,
+    checkCourseOrLesson,
     courseEnroll,
 );
 
-onBoardingRoutes.get('/course', getCourses);
-
-onBoardingRoutes.get('/test', onBoardingDataValidation.lessonTest, lessonTest);
-
-onBoardingRoutes.get(
-    '/questions',
-    onBoardingDataValidation.showQuestion,
-    checkCourse,
-    showQuestion,
-);
-
-onBoardingRoutes.get(
-    '/lessoncontent',
-    onBoardingDataValidation.showContent,
-    showContent,
-);
-
 onBoardingRoutes.put(
-    '/addlesson',
+    '/addLesson',
     onBoardingDataValidation.addLesson,
+    checkCourseOrLesson,
     addLesson,
 );
 

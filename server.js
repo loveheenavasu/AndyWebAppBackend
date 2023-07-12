@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(onBoardingRoutes);
 app.use(adminRoutes);
 dbConnect()
-    .then((val) => {
+    .then(() => {
       app.listen(PORT, () => {
         console.log(`Server running at port:${PORT}`);
       });

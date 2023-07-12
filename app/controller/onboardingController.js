@@ -4,7 +4,6 @@ const {findOneUser} = require('../services/userServices');
 const MESSAGES = require('../utils/messages');
 const {
   createCourse,
-  findOneCourse,
   findCourse,
   findOneAndUpdateCourse,
 } = require('../services/courseServices');
@@ -16,38 +15,8 @@ const {createLesson, findOneLesson} = require('../services/lessonServices');
 
 const userController = {};
 
-// /**
-//  * general function to get authentication of the user
-//  * @param {*} req
-//  * @param {*} res
-//
-//  */
-// async function verifyUser(req, res) {
-//   try {
-//     if (!req.headers.authorization) {
-//       return res.status(400).json({message: MESSAGES.UNAUTHORIZED_USER});
-//    }
-//     const session = await findOneSession({token: req.headers.authorization});
-//     if (session) {
-//       const decryptToken = await helperFunction.decryptToken(
-//         req.headers.authorization
-//       );
-//       const user = await findOneUser({_id: decryptToken._id});
-//       if (!user) {
-//         return res.status().json({message: MESSAGES.UNAUTHORIZED_USER});
-//      } else {
-//         return user;
-//      }
-//    }
-//     return res.status(400).json({message: MESSAGES.UNAUTHORIZED_USER});
-//  } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({message: 'Internal Server Error'});
-//  }
-// }
-
 /**
- * link send to email for the user
+ * to send the email when tries to login
  * @param {*} req
  * @param {*} res
  */
@@ -66,42 +35,53 @@ userController.onboarding = async (req, res) => {
     return res.status(200).json({message: MESSAGES.LINK_SENT_ON_EMAIL});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
-  }
-};
-
-userController.verifyOnboarding = async (req, res) => {
-  try {
-    const user = await helperFunction.verifyUser(req, res);
-    if (user) {
-      res.status(200).json({message: user});
-    } else {
-      res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
-    }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * show courses
+ * verify the user and getting his profile
+ * @param {*} req
+ * @param {*} res
+  */
+userController.verifyOnboarding = async (req, res) => {
+  try {
+    const user = await helperFunction.verifyUser(req, res);
+    if (user) {
+      const userObj = await helperFunction.getUser(req);
+      if (userObj) {
+        return res.status(200).json({message: userObj});
+      }
+    } else {
+      res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
+    }
+  } catch (error) {
+    console.error('controller catch block :: ', error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+};
+
+/**
+ * user can see all the courses
  * @param {*} req
  * @param {*} res
  */
 userController.getCourses = async (req, res) => {
   try {
-    await helperFunction.verifyUser(req, res);
-    const courses = await findCourse({}, {'description': 1});
+    const user = await helperFunction.verifyUser(req, res);
+    if (!user) {
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
+    }
+    const courses = await findCourse({}, {description: 1});
     res.status(200).json(courses);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * for admin to create the course
+ * admin can add new course
  * @param {*} req
  * @param {*} res
  */
@@ -125,125 +105,89 @@ userController.addCourse = async (req, res) => {
     res.status(201).json({message: MESSAGES.COURSE_ADDED});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * for user to give test
+ * validating the answer is correct or wrong during test
  * @param {*} req
  * @param {*} res
  */
 userController.lessonTest = async (req, res) => {
   try {
     const user = await helperFunction.verifyUser(req, res);
-    const courseEnrolled = await findOneEnrolledCourse({
-      userId: user._id,
-      courseId: req.body.courseId,
-    });
-    if (!courseEnrolled) {
-      return res.status(404).json({message: MESSAGES.COURSE_NOT_ENROLLED});
+    if (!user) {
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
     }
-    const answer = await findOneCourse({
-      '_id': req.body.courseId,
-      'course.courseLesson.lesson.lessonId': req.body.lessonId,
-      'course.courseLesson': {
-        $elemMatch: {
-          'lesson.questionAnswer': {
-            $elemMatch: {
-              _id: req.body.questionId,
-              correctAnswer: req.body.value,
-            },
-          },
-        },
-      },
+    await helperFunction.courseEnroll(req, res);
+    const answer = await findOneLesson({
+      '_id': req.body.lessonId,
+      'questionAnswer._id': req.body.questionId,
+      'questionAnswer.correctAnswer': req.body.value,
     });
-
     if (answer) {
-      return res.status(200).json({message: MESSAGES.CORRECT_ANSWER});
+      res.status(200).json({message: MESSAGES.CORRECT_ANSWER});
     } else {
-      return res.status(404).json({message: MESSAGES.INCORRECT_ANSWER});
+      res.status(404).json({message: MESSAGES.INCORRECT_ANSWER});
     }
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * show question to user during test
+ * user can see the question
  * @param {*} req
  * @param {*} res
  */
 userController.showQuestion = async (req, res) => {
   try {
     const user = await helperFunction.verifyUser(req, res);
-    const courseEnrolled = await findOneEnrolledCourse({
-      userId: user._id,
-      courseId: req.body.courseId,
-    });
-    if (!courseEnrolled) {
-      return res.status(404).json({message: MESSAGES.COURSE_NOT_ENROLLED});
+    if (!user) {
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
     }
-    const question = await findOneLesson({
-      '_id': req.body.lessonId,
-    }, {'lessonName': 0, 'description': 0, 'questionAnswer.correctAnswer': 0});
-
-    if (!question) {
-      return res.status(404).json({message: MESSAGES.QUESTION_NOT_ADDED});
-    }
-    res.status(200).json(question);
+    await helperFunction.courseEnroll(req, res);
+    const lesson = req.body.lesson.questionAnswer;
+    res.status(200).json(lesson);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * show content to user for course
+ * user can see the content of the lesson
  * @param {*} req
  * @param {*} res
  */
 userController.showContent = async (req, res) => {
   try {
     const user = await helperFunction.verifyUser(req, res);
-    const courseId = req.body.courseId;
-    const lessonId = req.body.lessonId;
-    const courseEnrolled = await findOneEnrolledCourse({
-      userId: user._id,
-      courseId: courseId,
-    });
-    if (!courseEnrolled) {
-      return res.status(404).json({message: MESSAGES.COURSE_NOT_ENROLLED});
+    if (!user) {
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
     }
-    const course = await findOneCourse({
-      '_id': courseId,
-      'courseLesson.lesson': lessonId,
-    });
-    if (!course) {
-      return res.status(404).json({message: MESSAGES.LESSON_NOT_FOUND});
-    }
-    const lessonContent = await findOneLesson(
-        {_id: lessonId},
-        {lessonName: 1, description: 1, _id: 0},
-    );
-
-    res.json({message: lessonContent});
+    await helperFunction.courseEnroll(req, res);
+    res.json({message: req.body.lesson});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
-
-// user can enroll the course
+/**
+ * user can enroll the course
+ * @param {*} req
+ * @param {*} res
+ */
 userController.courseEnroll = async (req, res) => {
   try {
     const user = await helperFunction.verifyUser(req, res);
-    const course = await findOneCourse({_id: req.body.courseId});
-    if (!course) {
-      return res.status(404).json({message: MESSAGES.COURSE_DOES_NOT_EXIST});
+    if (!user) {
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
     }
+    const course = req.body.course;
     const courseAlreadyEnrolled = await findOneEnrolledCourse({
       userId: user._id,
       courseId: course._id,
@@ -251,39 +195,35 @@ userController.courseEnroll = async (req, res) => {
     if (courseAlreadyEnrolled) {
       return res.status(409).json({message: MESSAGES.COURSE_ALREADY_ADDED});
     }
-    const enrollMent = {
+    const courseEnroll = {
       userId: user._id,
       courseId: course._id,
     };
-    await createCourseEnrollment(enrollMent);
+    await createCourseEnrollment(courseEnroll);
     res.status(201).json({message: MESSAGES.COURSE_ENROLLED});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
 /**
- * admin can add new lesson to the course
+ * admin can add the new lesson
  * @param {*} req
  * @param {*} res
  */
 userController.addLesson = async (req, res) => {
   try {
     await helperFunction.adminAuthentication(req, res);
-    const courseExist = await findOneCourse({_id: req.body.courseId});
-    if (!courseExist) {
-      return res.status(404).json({message: MESSAGES.COURSE_DOES_NOT_EXIST});
-    }
-    const course = await findOneAndUpdateCourse(
+    const lesson = await createLesson(req.body);
+    await findOneAndUpdateCourse(
         {_id: req.body.courseId},
-        {$push: {'course.courseLesson': req.body.lesson}},
+        {$push: {courseLesson: {lesson: lesson._id}}},
     );
-    console.log(course);
     return res.status(201).json({message: MESSAGES.LESSON_ADDED});
   } catch (error) {
     console.error(error);
-    return res.status(500).json({message: 'Internal Server Error'});
+    return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
 
