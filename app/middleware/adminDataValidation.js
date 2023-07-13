@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const {PLEASE_ENTER_REQUIRED_FIELD} = require('../utils/messages');
 
 const adminDataValidation = {};
@@ -23,7 +24,7 @@ adminDataValidation.adminLogin = (req, res, next) => {
  * @param {*} next
  */
 adminDataValidation.encryptToken = (req, res, next) => {
-  if (req.body.userId) {
+  if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
     next();
   } else {
     return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});

@@ -38,4 +38,12 @@ courseServices.findOneAndUpdateCourse = async (searchQuery, updateQuery) => {
   return await courseModel.findOneAndUpdate(searchQuery, updateQuery);
 };
 
+/**
+ * service to delete the course
+ * @param {*} searchQuery
+ */
+courseServices.findOneAndDeleteCourse = async (searchQuery) => {
+  return await courseModel.findOneAndDelete(searchQuery);
+}
+
 module.exports = courseServices;

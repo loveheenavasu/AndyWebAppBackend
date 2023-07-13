@@ -11,7 +11,7 @@ const authValidation = {};
  */
 authValidation.adminAuthentication = async (req, res, next) => {
   if (!req.headers.authorization) {
-    return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
+    return res.status(400).json({message: MESSAGES.INVALID_TOKEN});
   }
   const token = await findOneSession({
     token: req.headers.authorization,

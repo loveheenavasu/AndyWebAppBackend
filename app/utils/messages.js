@@ -20,5 +20,11 @@ const MESSAGES = {
   INVALID_TOKEN: 'Invalid token',
   LESSON_NOT_FOUND: 'Lesson not found',
   INTERNAL_SERVER_ERROR: 'Internal server error',
+  COURSE_UPDATED_SUCCESSFULLY: 'Course updated successfully',
+  LESSON_UPDATED: 'Lesson updated successfully',
+  QUESTION_UPDATED: 'Question updated successfully',
+  QUESTION_DELETED: 'Question deleted successfully',
+  LESSON_DELETED: 'Lesson deleted successfully',
+  COURSE_DELETED: 'Course deleted successfully',
 };
 module.exports = MESSAGES;

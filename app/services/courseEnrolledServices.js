@@ -21,4 +21,12 @@ courseEnrolledServices.findOneEnrolledCourse = async (
   return await enrolledCourseModel.findOne(searchQuery, projectionQuery);
 };
 
+/**
+ * service for deleting the enrolled course
+ * @param {*} searchQuery 
+ */
+courseEnrolledServices.findOneAndDeleteEnrollCousrse = async (searchQuery) => {
+  return await enrolledCourseModel.findOneAndDelete(searchQuery);
+}
+
 module.exports = courseEnrolledServices;

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const {
   PLEASE_ENTER_REQUIRED_FIELD,
 } = require('../utils/messages');
@@ -35,7 +36,7 @@ const onBoardingDataValidation = {
     const payload=req.body;
     if (
       req.headers.authorization&&
-      payload.courseId&&
+      mongoose.Types.ObjectId.isValid(payload.courseId)&&
       payload.lessonName&&
       payload.description&&
       payload.questionAnswer.length>0
@@ -67,7 +68,8 @@ const onBoardingDataValidation = {
    * @param {*} next
    */
   enrollCourse: (req, res, next) => {
-    if (req.headers.authorization&&req.body.courseId) {
+    if (req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)) {
       next();
     } else {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
@@ -81,7 +83,9 @@ const onBoardingDataValidation = {
    * @param {*} next
    */
   showContent: (req, res, next) => {
-    if (req.headers.authorization&&req.body.courseId && req.body.lessonId) {
+    if (req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId) && 
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)) {
       next();
     } else {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
@@ -95,7 +99,9 @@ const onBoardingDataValidation = {
    * @param {*} next {*}
    */
   showQuestion: (req, res, next) => {
-    if (req.headers.authorization&&req.body.courseId && req.body.lessonId) {
+    if (req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId) && 
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)) {
       next();
     } else {
       return res.status(400).json({messge: PLEASE_ENTER_REQUIRED_FIELD});
@@ -111,9 +117,9 @@ const onBoardingDataValidation = {
   lessonTest: (req, res, next) => {
     if (
       req.headers.authorization&&
-      req.body.lessonId &&
-      req.body.courseId &&
-      req.body.questionId &&
+      mongoose.Types.ObjectId.isValid(req.body.lessonId) &&
+      mongoose.Types.ObjectId.isValid(req.body.courseId) &&
+      mongoose.Types.ObjectId.isValid(req.body.questionId) &&
       req.body.value
     ) {
       next();
@@ -121,6 +127,112 @@ const onBoardingDataValidation = {
       return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
     }
   },
+
+  /**
+   * data validation for updating the course
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  updateCourse: (req,res,next) => {
+    if(
+      req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)&&
+      (req.body.courseName||req.body.description)) {
+      next();
+    } else {
+      return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    }
+  },
+
+  /**
+   * data validation for updating the course
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  updateLesson: (req,res,next) => {
+    if(
+      req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)&&
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)&& 
+      (req.body.lessonName||req.body.description)){
+        next();
+      } 
+      else {
+        return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    }
+  },
+
+  /**
+   * data validation to update the question
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  updateQuestion: (req,res,next) => {
+    if(
+      req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)&&
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)&&
+      mongoose.Types.ObjectId.isValid(req.body.questionId)) {
+        next();
+      }
+      else {
+        return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+      }
+  },
+
+  /**
+   * data validation to delete the question
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  deleteQuestion: (req,res,next) => {
+    if(req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)&&
+      mongoose.Types.ObjectId.isValid(req.body.questionId)&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)){
+        next();
+      } 
+      else {
+        return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+      }
+  },
+
+  /**
+   * data validation to delete the lesson
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  deleteLesson: (req,res,next) => {
+    if(req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)&&
+      mongoose.Types.ObjectId.isValid(req.body.lessonId)) {
+        next();
+    }
+    else {
+      return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    }
+  },
+
+  /**
+   * data validation to delete the course
+   * @param {*} req 
+   * @param {*} res 
+   * @param {*} next
+   */
+  deleteCourse: (req,res,next) => {
+    if(req.headers.authorization&&
+      mongoose.Types.ObjectId.isValid(req.body.courseId)){
+        next();
+      }
+      else {
+        return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+      }
+  }
 };
 
 module.exports = onBoardingDataValidation;

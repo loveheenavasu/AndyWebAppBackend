@@ -6,12 +6,14 @@ const {
   createCourse,
   findCourse,
   findOneAndUpdateCourse,
+  findOneAndDeleteCourse,
 } = require('../services/courseServices');
 const {
   createCourseEnrollment,
   findOneEnrolledCourse,
+  findOneAndDeleteEnrollCousrse,
 } = require('../services/courseEnrolledServices');
-const {createLesson, findOneLesson} = require('../services/lessonServices');
+const {createLesson, findOneLesson, findOneAndUpdateLesson,  findAndDeleteOneLesson} = require('../services/lessonServices');
 
 const userController = {};
 
@@ -87,10 +89,6 @@ userController.getCourses = async (req, res) => {
  */
 userController.addCourse = async (req, res) => {
   try {
-    const admin = await helperFunction.adminAuthentication(req, res);
-    if(!admin){
-      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER})
-    }
     const payload = req.body;
     const lesson = {
       lessonName: payload.lessonName,
@@ -217,7 +215,6 @@ userController.courseEnroll = async (req, res) => {
  */
 userController.addLesson = async (req, res) => {
   try {
-    await helperFunction.adminAuthentication(req, res);
     const lesson = await createLesson(req.body);
     await findOneAndUpdateCourse(
         {_id: req.body.courseId},
@@ -229,5 +226,118 @@ userController.addLesson = async (req, res) => {
     return res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
   }
 };
+/**
+ * admin can update the course
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.updateCourse = async (req,res) => {
+  try {
+    await findOneAndUpdateCourse({_id: req.body.courseId},
+      {$set: req.body});
+    res.status(200).json({message: MESSAGES.COURSE_UPDATED_SUCCESSFULLY})
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+};
+
+
+/**
+ * admin can update the lesson
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.updateLesson = async (req,res) => {
+  try {
+    await findOneAndUpdateLesson({_id: req.body.lessonId},
+      {$set: req.body});
+    res.status(200).json({message: MESSAGES.LESSON_UPDATED});  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR})
+  }
+};
+
+/**
+ * admin can update the question
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.updateQuestion = async (req,res) => {
+  try {
+    await findOneAndUpdateLesson({_id: req.body.lessonId,"questionAnswer._id": req.body.questionId},{
+      $set: {
+        "questionAnswer.$.question": req.body.question,
+        "questionAnswer.$.options": req.body.options,
+        "questionAnswer.$.correctAnswer": req.body.correctAnswer
+      }
+    });
+    res.status(200).json({message: MESSAGES.QUESTION_UPDATED});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+};
+
+/**
+ * admin can delete the question
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.deleteQuestion = async (req,res) => {
+  try {
+    await findOneAndUpdateLesson({
+      _id: req.body.lessonId
+    },{
+      $pull: {questionAnswer:{_id: req.body.questionId}}
+    });
+    res.status(200).json({message: MESSAGES.QUESTION_DELETED});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+}
+
+/**
+ * admin can delete the lesson
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.deleteLesson = async (req,res) => {
+  try {
+    await findAndDeleteOneLesson({_id: req.body.lessonId});
+    await findOneAndUpdateCourse({_id: req.body.courseId},
+      {
+        $pull: {courseLesson: {lesson: req.body.lessonId}}
+      }
+      );
+    res.status(200).json({message: MESSAGES.LESSON_DELETED});
+  } catch(error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+}
+
+/**
+ * admin can delete the course
+ * @param {*} req 
+ * @param {*} res 
+ */
+userController.deleteCourse = async (req,res) => {
+  try {
+    const courseId = req.body.course._id;
+    const lesson = req.body.course.courseLesson;
+    await findOneAndDeleteEnrollCousrse({courseId: courseId});
+    await findOneAndDeleteCourse({_id: courseId});
+    for(let i = 0; i < lesson.length ;i++){
+      findAndDeleteOneLesson({_id:lesson[i].lesson});
+    }
+    res.status(200).json({message: MESSAGES.COURSE_DELETED});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({message: MESSAGES.INTERNAL_SERVER_ERROR});
+  }
+}
 
 module.exports = userController;
