@@ -102,4 +102,20 @@ helperFunction.courseEnroll=async (req, res)=> {
   }
 };
 
+/**
+ * verifying the admin while adding the lesson
+ * @param {*} req 
+ * @param {*} res 
+ */
+helperFunction.adminAuthentication = async (req, res) => {
+  const token = await findOneSession({
+    token: req.headers.authorization,
+    userType: 'admin',
+  });
+  if (!token) {
+    return false;
+  }
+  return true;
+};
+
 module.exports = helperFunction;

@@ -12,6 +12,7 @@ const onBoardingDataValidation = {
   addCourse: (req, res, next) => {
     const payload = req.body;
     if (
+      req.headers.authorization&&
       payload.lessonName &&
       payload.lessonDescription &&
       payload.questionAnswer &&

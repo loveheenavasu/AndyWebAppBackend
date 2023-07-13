@@ -87,7 +87,10 @@ userController.getCourses = async (req, res) => {
  */
 userController.addCourse = async (req, res) => {
   try {
-    await helperFunction.adminAuthentication(req, res);
+    const admin = await helperFunction.adminAuthentication(req, res);
+    if(!admin){
+      return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER})
+    }
     const payload = req.body;
     const lesson = {
       lessonName: payload.lessonName,
@@ -195,7 +198,7 @@ userController.courseEnroll = async (req, res) => {
     if (courseAlreadyEnrolled) {
       return res.status(409).json({message: MESSAGES.COURSE_ALREADY_ADDED});
     }
-    const courseEnroll = {
+     const courseEnroll = {
       userId: user._id,
       courseId: course._id,
     };
