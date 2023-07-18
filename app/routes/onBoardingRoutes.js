@@ -1,5 +1,5 @@
 
-const express = require('express');
+const express = require( 'express' );
 const {
   onboarding,
   verifyOnboarding,
@@ -10,117 +10,116 @@ const {
   addLesson,
   lessonTest,
   addCourse,
-  updateCousre,
   updateCourse,
   updateLesson,
   updateQuestion,
   deleteQuestion,
   deleteLesson,
   deleteCourse,
-} = require('../controller/onboardingController');
+} = require( '../controller/onboardingController' );
 const onBoardingDataValidation =
-require('../middleware/onBoardingDataValidation');
-const {checkCourseOrLesson} = require('../middleware/onBoarding');
-const { adminAuthentication } = require('../middleware/authentication');
+require( '../middleware/onBoardingDataValidation' );
+const { checkCourseOrLessonOrQuestion } = require( '../middleware/onBoarding' );
+const { adminAuthentication } = require( '../middleware/authentication' );
 // eslint-disable-next-line new-cap
 const onBoardingRoutes = express.Router();
 
-onBoardingRoutes.get('/onboarding', onboarding);
+onBoardingRoutes.get( '/onboarding', onboarding );
 
 onBoardingRoutes.get(
-    '/verifyOnboarding',
-    onBoardingDataValidation.verifyOnboarding,
-    verifyOnboarding,
+  '/verifyOnboarding',
+  onBoardingDataValidation.verifyOnboarding,
+  verifyOnboarding,
 );
 
-onBoardingRoutes.get('/course', getCourses);
+onBoardingRoutes.get( '/course', getCourses );
 
-onBoardingRoutes.get('/lessonTest',
-    onBoardingDataValidation.lessonTest,
-    checkCourseOrLesson,
-    lessonTest);
+onBoardingRoutes.get( '/lessonTest',
+  onBoardingDataValidation.lessonTest,
+  checkCourseOrLessonOrQuestion,
+  lessonTest );
 
 onBoardingRoutes.get(
-    '/showQuestions',
-    onBoardingDataValidation.showQuestion,
-    checkCourseOrLesson,
-    showQuestion,
+  '/showQuestions',
+  onBoardingDataValidation.showQuestion,
+  checkCourseOrLessonOrQuestion,
+  showQuestion,
 );
 
 onBoardingRoutes.get(
-    '/lessonContent',
-    onBoardingDataValidation.showContent,
-    checkCourseOrLesson,
-    showContent,
+  '/lessonContent',
+  onBoardingDataValidation.showContent,
+  checkCourseOrLessonOrQuestion,
+  showContent,
 );
 
 onBoardingRoutes.post(
-    '/course', 
-    onBoardingDataValidation.addCourse, 
-    adminAuthentication,
-    addCourse);
+  '/course',
+  adminAuthentication,
+  onBoardingDataValidation.addCourse,
+  addCourse );
 
 onBoardingRoutes.post(
-    '/courseEnrolled',
-    onBoardingDataValidation.enrollCourse,
-    checkCourseOrLesson,
-    courseEnroll,
+  '/courseEnrolled',
+  onBoardingDataValidation.enrollCourse,
+  checkCourseOrLessonOrQuestion,
+  courseEnroll,
 );
 
 onBoardingRoutes.put(
-    '/addLesson',
-    onBoardingDataValidation.addLesson,
-    adminAuthentication,
-    checkCourseOrLesson,
-    addLesson,
+  '/addLesson',
+  adminAuthentication,
+  onBoardingDataValidation.addLesson,
+  checkCourseOrLessonOrQuestion,
+  addLesson,
 );
 
 onBoardingRoutes.put(
-    '/course',
-    onBoardingDataValidation.updateCourse,
-    adminAuthentication,
-    checkCourseOrLesson,
-    updateCourse
+  '/course',
+  adminAuthentication,
+  onBoardingDataValidation.updateCourse,
+  checkCourseOrLessonOrQuestion,
+  updateCourse,
 );
 
 onBoardingRoutes.put(
-    '/lesson',
-    onBoardingDataValidation.updateLesson,
-    adminAuthentication,
-    checkCourseOrLesson,
-    updateLesson
+  '/lesson',
+  onBoardingDataValidation.updateLesson,
+  adminAuthentication,
+  checkCourseOrLessonOrQuestion,
+  updateLesson,
 );
 
 onBoardingRoutes.put(
-    '/question',
-    onBoardingDataValidation.updateQuestion,
-    adminAuthentication,
-    checkCourseOrLesson,
-    updateQuestion
+  '/question',
+  onBoardingDataValidation.updateQuestion,
+  adminAuthentication,
+  checkCourseOrLessonOrQuestion,
+  updateQuestion,
 );
 
 onBoardingRoutes.delete(
-    '/question',
-    onBoardingDataValidation.deleteQuestion,
-    adminAuthentication,
-    checkCourseOrLesson,
-    deleteQuestion
+  '/question',
+  onBoardingDataValidation.deleteQuestion,
+  adminAuthentication,
+  checkCourseOrLessonOrQuestion,
+  deleteQuestion,
 );
 
 onBoardingRoutes.delete(
-    '/lesson',
-    onBoardingDataValidation.deleteLesson,
-    adminAuthentication,
-    checkCourseOrLesson,
-    deleteLesson
+  '/lesson',
+  onBoardingDataValidation.deleteLesson,
+  adminAuthentication,
+  checkCourseOrLessonOrQuestion,
+  deleteLesson,
 );
 
 onBoardingRoutes.delete(
-    '/course',
-    onBoardingDataValidation.deleteCourse,
-    adminAuthentication,
-    checkCourseOrLesson,
-    deleteCourse
-    );
+  '/course',
+  onBoardingDataValidation.deleteCourse,
+  adminAuthentication,
+  checkCourseOrLessonOrQuestion,
+  deleteCourse,
+);
 
 module.exports = onBoardingRoutes;

@@ -1,4 +1,4 @@
-const enrolledCourseModel = require('../models/enrolledCourseModel');
+const enrolledCourseModel = require( '../models/enrolledCourseModel' );
 
 const courseEnrolledServices = {};
 
@@ -7,8 +7,8 @@ const courseEnrolledServices = {};
  * @param {*} payload
  * @return {*}
  */
-courseEnrolledServices.createCourseEnrollment = async (payload)=>{
-  return await enrolledCourseModel(payload).save();
+courseEnrolledServices.createCourseEnrollment = async ( payload )=>{
+  return await enrolledCourseModel( payload ).save();
 };
 
 /**
@@ -17,16 +17,17 @@ courseEnrolledServices.createCourseEnrollment = async (payload)=>{
  * @param {*} projectionQuery
  */
 courseEnrolledServices.findOneEnrolledCourse = async (
-    searchQuery, projectionQuery)=>{
-  return await enrolledCourseModel.findOne(searchQuery, projectionQuery);
+  searchQuery, projectionQuery )=>{
+  return await enrolledCourseModel.findOne( searchQuery, projectionQuery );
 };
 
 /**
  * service for deleting the enrolled course
- * @param {*} searchQuery 
+ * @param {*} searchQuery
  */
-courseEnrolledServices.findOneAndDeleteEnrollCousrse = async (searchQuery) => {
-  return await enrolledCourseModel.findOneAndDelete(searchQuery);
-}
+courseEnrolledServices.findOneAndDeleteEnrollCousrse =
+  async ( searchQuery ) => {
+    return await enrolledCourseModel.findOneAndDelete( searchQuery );
+  };
 
 module.exports = courseEnrolledServices;

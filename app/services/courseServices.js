@@ -1,4 +1,4 @@
-const {courseModel} = require('../models/courseModel');
+const { courseModel } = require( '../models/courseModel' );
 
 const courseServices = {};
 
@@ -6,8 +6,8 @@ const courseServices = {};
  * service to create the course
  * @param {*} course
  */
-courseServices.createCourse = async (course) => {
-  return await courseModel(course).save();
+courseServices.createCourse = async ( course ) => {
+  return await courseModel( course ).save();
 };
 
 /**
@@ -15,18 +15,17 @@ courseServices.createCourse = async (course) => {
  * @param {*} searchQuery
  * @param {*} projectionQuery
  */
-courseServices.findCourse = async (searchQuery, projectionQuery) => {
-  return await courseModel.find(searchQuery, projectionQuery);
+courseServices.findCourse = async ( searchQuery, projectionQuery ) => {
+  return await courseModel.find( searchQuery, projectionQuery );
 };
-
 
 /**
  * service to search for the single course
  * @param {*} searchQuery
  * @param {*} projectionQuery
  */
-courseServices.findOneCourse = async (searchQuery, projectionQuery)=>{
-  return await courseModel.findOne(searchQuery, projectionQuery);
+courseServices.findOneCourse = async ( searchQuery, projectionQuery )=>{
+  return await courseModel.findOne( searchQuery, projectionQuery );
 };
 
 /**
@@ -34,16 +33,16 @@ courseServices.findOneCourse = async (searchQuery, projectionQuery)=>{
  * @param {*} searchQuery
  * @param {*} updateQuery
  */
-courseServices.findOneAndUpdateCourse = async (searchQuery, updateQuery) => {
-  return await courseModel.findOneAndUpdate(searchQuery, updateQuery);
+courseServices.findOneAndUpdateCourse = async ( searchQuery, updateQuery ) => {
+  return await courseModel.findOneAndUpdate( searchQuery, updateQuery );
 };
 
 /**
  * service to delete the course
  * @param {*} searchQuery
  */
-courseServices.findOneAndDeleteCourse = async (searchQuery) => {
-  return await courseModel.findOneAndDelete(searchQuery);
-}
+courseServices.findOneAndDeleteCourse = async ( searchQuery ) => {
+  return await courseModel.findOneAndDelete( searchQuery );
+};
 
 module.exports = courseServices;

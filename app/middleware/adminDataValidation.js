@@ -1,5 +1,6 @@
-const { default: mongoose } = require('mongoose');
-const {PLEASE_ENTER_REQUIRED_FIELD} = require('../utils/messages');
+/* eslint-disable valid-jsdoc */
+const { default : mongoose } = require( 'mongoose' );
+const { PLEASE_ENTER_REQUIRED_FIELD } = require( '../utils/messages' );
 
 const adminDataValidation = {};
 
@@ -9,11 +10,11 @@ const adminDataValidation = {};
  * @param {*} res
  * @param {*} next
  */
-adminDataValidation.adminLogin = (req, res, next) => {
-  if (req.body.email && req.body.password) {
+adminDataValidation.adminLogin = ( req, res, next ) => {
+  if ( req.body.email && req.body.password ) {
     next();
   } else {
-    return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    return res.status( 400 ).json( { message : PLEASE_ENTER_REQUIRED_FIELD } );
   }
 };
 
@@ -23,25 +24,25 @@ adminDataValidation.adminLogin = (req, res, next) => {
  * @param {*} res
  * @param {*} next
  */
-adminDataValidation.encryptToken = (req, res, next) => {
-  if (mongoose.Types.ObjectId.isValid(req.body.userId)) {
+adminDataValidation.encryptToken = ( req, res, next ) => {
+  if ( mongoose.Types.ObjectId.isValid( req.body.userId ) ) {
     next();
   } else {
-    return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    return res.status( 400 ).json( { message : PLEASE_ENTER_REQUIRED_FIELD } );
   }
 };
 
 /**
  * data validation to decrypt the token
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
-adminDataValidation.decryptToken = (req, res, next) => {
-  if (req.body.token) {
+adminDataValidation.decryptToken = ( req, res, next ) => {
+  if ( req.body.token ) {
     next();
   } else {
-    return res.status(400).json({message: PLEASE_ENTER_REQUIRED_FIELD});
+    return res.status( 400 ).json( { message : PLEASE_ENTER_REQUIRED_FIELD } );
   }
 };
 

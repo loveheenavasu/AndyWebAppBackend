@@ -3,7 +3,7 @@
     "start": "nodemon ./server.js",
     "dev": "nodemon ./server.js",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint .eslintrc.json --fix ./*.js"
   },
   "dependencies": {
     "circular-json": "^0.5.9",

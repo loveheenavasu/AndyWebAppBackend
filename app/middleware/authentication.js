@@ -1,5 +1,5 @@
-const {findOneSession} = require('../services/sessionServices');
-const MESSAGES = require('../utils/messages');
+const { findOneSession } = require( '../services/sessionServices' );
+const MESSAGES = require( '../utils/messages' );
 
 const authValidation = {};
 
@@ -9,16 +9,16 @@ const authValidation = {};
  * @param {*} res
  * @param {*} next
  */
-authValidation.adminAuthentication = async (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(400).json({message: MESSAGES.INVALID_TOKEN});
+authValidation.adminAuthentication = async ( req, res, next ) => {
+  if ( !req.headers.authorization ) {
+    return res.status( 498 ).json( { message : MESSAGES.INVALID_TOKEN } );
   }
-  const token = await findOneSession({
-    token: req.headers.authorization,
-    userType: 'admin',
-  });
-  if (!token) {
-    return res.status(401).json({message: MESSAGES.UNAUTHORIZED_USER});
+  const token = await findOneSession( {
+    token : req.headers.authorization,
+    userType : 'admin',
+  } );
+  if ( !token ) {
+    return res.status( 401 ).json( { message : MESSAGES.UNAUTHORIZED_USER } );
   }
   next();
   return token;
