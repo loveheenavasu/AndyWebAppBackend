@@ -1,0 +1,110 @@
+{
+    "id": "ahjkjdfasda",
+    "name": "JS",
+    "description": "js course",
+    "modules": [
+        {
+            "name": "Course module 1",
+            "sections": [
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": {
+                    "consumed": "0",
+                    "total": "1200"
+                  },
+                  "questions": [
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": 2,
+                        "selectedAnswer": null
+                    },
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": "c",
+                        "selectedAnswer": null
+                    },
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": "c",
+                        "selectedAnswer": null
+                    }
+                  ]
+              },
+              {
+                  "name": "Intro to JS",
+                  "type": "Text",
+                  "content": "TEXT CONTENT",
+                  "duration": "1000",
+                  "questions": [
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": "c"
+                    },
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": "c"
+                    },
+                    {
+                        "question": "Intro to JS?",
+                        "options": ["a", "b", "c", "d"],
+                        "answer": "c"
+                    }
+                  ]
+              }
+            ]
+          },
+          {
+            "name": "Introduction",
+            "subContent": [
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              },
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              },
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              }
+            ]
+          },
+          {
+            "name": "Introduction",
+            "subContent": [
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              },
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              },
+              {
+                  "name": "Intro to JS",
+                  "type": "Video",
+                  "url": "http://test.com",
+                  "duration": "1200"
+              }
+            ]
+          }
+    ]
+}
