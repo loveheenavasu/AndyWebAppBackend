@@ -11,7 +11,7 @@ interface HomeProps {
   apiResponse: any | null;
 }
 const Home = ({ isLoading, apiResponse }: HomeProps) => {
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <Flex align="center" justify="center" h="100vh">
         <Spinner

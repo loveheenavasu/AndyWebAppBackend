@@ -5,7 +5,12 @@ if (!process.env.MONGODB_URI) {
 }
 
 const uri = process.env.MONGODB_URI;
-const options = {};
+const options = {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+
+};
 
 let client;
 let clientPromise: Promise<MongoClient>;
@@ -19,7 +24,7 @@ if (process.env.NODE_ENV === "development") {
 
   if (!globalWithMongo._mongoClientPromise) {
     client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+    globalWithMongo._mongoClientPromise = client.connect().then((e: any) => console.log("DB connected.....")).catch( (e : any) => console.log("Mongo connection error!!!")) ;
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
@@ -31,3 +36,5 @@ if (process.env.NODE_ENV === "development") {
 // Export a module-scoped MongoClient promise. By doing this in a
 // separate module, the client can be shared across functions.
 export default clientPromise;
+
+

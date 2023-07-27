@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import Navbar from "../navbar";
-import CourseModule from "../courseModule";
+// import CourseModule from "../courseModule";
 import OverallProgress from "../overallProgress";
 import AlertSection from "../alertSection";
 import Image from "next/image";
@@ -37,7 +37,7 @@ const DashBoard = () => {
                 </Text>
               </Box>
             </Box>
-            <CourseModule />
+            {/* <CourseModule /> */}
           </Box>
           <Box
             className="right_sidebar"
