@@ -7,9 +7,21 @@ interface module {
 };
 
 const moduleServices :module= {
+    
+    /**
+     * service to create the module
+     * @param payload 
+     * @returns 
+     */
     createModule : async (payload: any) =>{
         return await moduleModel.create(payload);
     },
+
+    /**
+     * service to find the module
+     * @param searchQuery 
+     * @returns 
+     */
     findOneModule : async (searchQuery) =>{
         return await moduleModel.findOne(searchQuery);
     }

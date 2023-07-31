@@ -19,6 +19,7 @@ interface enrollCourse {
 }
 
 const enrollCourseServices : enrollCourse = {
+  
   createEnroll : async (payload) =>{
     return await enrolledCourseModel.create(payload);
   },

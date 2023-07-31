@@ -18,5 +18,9 @@ export default async function question (req :NextApiRequest,res:NextApiResponse)
     if (!userId) {
         return res.status(404).json({messages : MESSAGES.UNAUTHORIZED_USER});
     }
+    const contentId = onBoardingDataValidation.validateContentId(req);
+    if(!contentId) {
+        return res.status(400).json({message: MESSAGES.INVALID_CONTENT_ID});
+    }
     await onBoardingController.question(req,res);
 };

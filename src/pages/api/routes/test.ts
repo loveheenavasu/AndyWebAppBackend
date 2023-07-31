@@ -12,15 +12,28 @@ export default async function test (req : NextApiRequest,res : NextApiResponse) 
     }
     const token = onBoardingDataValidation.checkToken(req);
     if(!token){
-        return res.status(400).json({message : 'token not found'});
+        return res.status(400).json({message : MESSAGES.TOKEN_NOT_FOUND});
     }
     const userId = await helperFunction.verifyUser(req,res);
     if (!userId) {
         return res.status(404).json({messages : MESSAGES.UNAUTHORIZED_USER});
     }
-    const validation = onBoardingDataValidation.testData(req);
-    if(!validation){
-        return res.status(400).json({message:MESSAGES.INVALID_REQUEST});
+    const value = onBoardingDataValidation.testData(req);
+    if(!value) {
+        return res.status(400).json({message : MESSAGES.INCOMPLETE_DATA});
     }
-    onBoardingController.test(req,res);
+    const questionId = await onBoardingDataValidation.validateQuestionId(req);
+    if(!questionId){
+        return res.status(400).json({message : MESSAGES.INVALID_QUESTION_ID});
+    }
+    const courseId = await onBoardingDataValidation.validateCourseId(req);
+    if(!courseId){
+        return res.status(400).json({message : MESSAGES.INVALID_COURSE_ID});
+    }
+    const contentId = await onBoardingDataValidation.validateContentId(req);
+    if(!contentId){
+        return res.status(400).json({message : MESSAGES.INVALID_CONTENT_ID});
+    }
+
+    await onBoardingController.test(req,res);
 }

@@ -7,9 +7,20 @@ interface sessionServices {
 }
 
 const sessionService : sessionServices = {
+  /**
+   * service to create the session
+   * @param session 
+   * @returns 
+   */
   createSession : async (session) => {
     return await sessionModel.create(session);
   },
+
+  /**
+   * service to find the session
+   * @param searchQuery 
+   * @returns 
+   */
   findOneSession : async (searchQuery) =>{
     return await sessionModel.findOne(searchQuery);
   }

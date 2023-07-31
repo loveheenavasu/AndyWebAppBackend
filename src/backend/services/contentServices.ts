@@ -7,9 +7,21 @@ interface content {
 };
 
 const contentServices:content = {
+    
+    /**
+     * service to create the content
+     * @param payload 
+     * @returns 
+     */
     createContent : async (payload) =>{
         return await contentModel.create(payload);
     },
+
+    /**
+     * service to find the content
+     * @param searchQuery 
+     * @returns 
+     */
     findOneContent : async (searchQuery) =>{
         return await contentModel.findOne(searchQuery);
     }

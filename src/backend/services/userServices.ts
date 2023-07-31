@@ -1,8 +1,5 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
 import userModel, { userDocument } from "../models/userModel";
-// import dbConnect from "../startUp/dbConnect";
-
-// dbConnect();
 
 interface UserService {
   createUser: (payload: Partial<userDocument>) => Promise<userDocument>;
@@ -13,9 +10,21 @@ interface UserService {
 }
 
 const userServices: UserService = {
+  /**
+   * service to create the user
+   * @param payload 
+   * @returns 
+   */
   createUser: async (payload) => {
     return await userModel.create(payload);
   },
+
+  /**
+   * service to find the user
+   * @param searchQuery 
+   * @param projectionQuery 
+   * @returns 
+   */
   findOneUser: async (searchQuery, projectionQuery) => {
     return await userModel.findOne(searchQuery, projectionQuery).exec();
   },

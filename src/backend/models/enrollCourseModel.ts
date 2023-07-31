@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface enrollCourseDocument extends Document{
     userId : Schema.Types.ObjectId,
     courseId: Schema.Types.ObjectId,
+    userType :string,
     content : []
 };
 
@@ -15,6 +16,10 @@ const enrolledCourseSchema = new mongoose.Schema<enrollCourseDocument>(
     courseId : {
       type : mongoose.Types.ObjectId,
       required : true,
+    },
+    userType : {
+      type : String,
+      required :true
     },
     content : [
       {

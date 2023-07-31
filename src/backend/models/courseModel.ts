@@ -15,7 +15,7 @@ const courseSchema  = new mongoose.Schema<courseDocument>( {
     type : String,
     required : true,
   },
-  modules : [ { type : mongoose.Types.ObjectId, ref : 'module' } ],
+  modules : [ { type : mongoose.Types.ObjectId, ref : 'Module' } ],
 }, { timestamps : true } );
 
 export interface moduleDocument extends Document {
@@ -33,7 +33,7 @@ const moduleSchema = new mongoose.Schema<moduleDocument>( {
     type : String,
     required : true,
   },
-  content : [ { type : mongoose.Types.ObjectId, ref : 'content' } ],
+  content : [ { type : mongoose.Types.ObjectId, ref : 'Content' } ],
 }, { timestamps : true } );
 
 export interface contentDocument extends Document {
@@ -58,7 +58,7 @@ const contentSchema = new mongoose.Schema<contentDocument>( {
     required : true,
   },
   duration : { type : Number, defaut : 0 },
-  questions : [ { type : mongoose.Types.ObjectId, ref : 'question' } ],
+  questions : [ { type : mongoose.Types.ObjectId, ref : 'Question' } ],
 }, { timestamps : true } );
 
 export interface questionDocument extends Document {

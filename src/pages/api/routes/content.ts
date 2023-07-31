@@ -19,5 +19,9 @@ export default async function content(req:NextApiRequest,res:NextApiResponse) {
     if(!session) {
         return res.status(404).json({message : MESSAGES.UNAUTHORIZED_USER});
     }
+    const moduleId = onBoardingDataValidation.validateModuleId(req);
+    if(!moduleId){
+        return res.status(400).json({message: MESSAGES.INVALID_MODULE_ID});
+    }
     await onBoardingController.content(req,res);
 }
